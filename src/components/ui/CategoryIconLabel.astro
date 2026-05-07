@@ -1,0 +1,26 @@
+---
+	import { Picture } from 'astro:assets'
+    interface Props {
+        icon: ImageMetadata
+        text:string
+    }
+
+    const { icon, text} = Astro.props
+---
+
+<div
+	class="reveal-card bg-white rounded-2xl p-10 shadow-lg flex flex-col items-center text-center relative z-10"
+>
+	<div class="w-32 h-32 rounded-full flex items-center justify-center bg-opacity-90">
+		<Picture 
+			src={icon} 
+			alt="Icono"
+			class="max-w-52 h-44 object-contain"
+			formats={['avif', 'webp']}
+		/>
+	</div>
+
+	<h3 class="mt-8 text-xl text-azul-marino font-sans font-bold leading-snug">
+		{text}
+	</h3>
+</div>

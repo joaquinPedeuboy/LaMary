@@ -1,0 +1,37 @@
+---
+    import { navigation } from "@/config/navigation"
+    const currentPath = Astro.url.pathname
+---
+
+    <nav class="hidden items-center mt-10 lg:flex gap-3 md:mt-0">
+        {navigation.map(item => {
+            const isActive =
+            item.href === '/'
+                ? currentPath === '/'
+                : currentPath.startsWith(item.href)
+
+            return (
+            <a
+                href={item.href}
+                class={`nav-link inline-block uppercase text-lg font-sans font-bold text-white relative ${
+                isActive ? 'nav-active' : ''
+                }`}
+            >
+                {item.name}
+            </a>
+            )
+        })}
+
+    </nav> 
+
+    <!-- MOBILE -->
+    <button
+        id="menu-btn"
+        class="lg:hidden text-white text-3xl"
+        aria-label="Abrir menú"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+
+    </button>

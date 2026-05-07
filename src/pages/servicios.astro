@@ -1,0 +1,333 @@
+---
+    import MainLayout from "@/layouts/MainLayout.astro";
+    import { Picture } from "astro:assets";
+    import { NosotrosSchema, ServiciosSchema } from '@/types';
+    import HomeContact from "@/components/contact/HomeContact.astro";
+    import chasis from '@/assets/chasis.jpeg';
+    import jaulaSimple from '@/assets/JaulaSimple2.jpeg';
+    import jaulaDoble from '@/assets/JaulaDoble3.jpeg';
+    const url = `${import.meta.env.API_URL}/pages?slug=servicios`
+    const res = await fetch(url)
+    const json = await res.json()
+    const data = ServiciosSchema.parse(json[0])
+
+    const url2 = `${import.meta.env.API_URL}/pages?slug=nosotros`
+    const res2 = await fetch(url2)
+    const json2 = await res2.json()
+
+    const dataequipo = NosotrosSchema.parse(json2[0])
+---
+
+<MainLayout
+    title={data.title.rendered}
+    pageTitle={data.title.rendered}
+    subtitle={data.acf.subtitle}
+    bgImage={data.featured_images.full.url}
+>
+    <div class="max-w-3xl mx-auto text-center mb-16 px-6">
+        <p class="text-lg md:text-xl text-gray-500 leading-relaxed">
+            En Transporte La Mary ofrecemos soluciones de transporte y logística 
+            adaptadas a las necesidades de cada cliente. Nuestro compromiso es 
+            brindar un servicio confiable, seguro y eficiente.
+        </p>
+    </div>
+    
+    <!-- Servicios -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 mb-10">
+        <!-- Cards -->
+        <div
+            class="
+            group
+            bg-marron-tierra
+            rounded-2xl
+            shadow-md
+            overflow-hidden
+            w-full max-w-sm mx-auto
+            reveal-card
+            flex flex-col
+
+            md:transform
+            md:transition
+            md:duration-300
+            md:shadow-xl
+            md:hover:-translate-y-2
+            md:hover:shadow-2xl
+            md:active:scale-[0.98]
+            md:active:shadow-xl
+            "
+        >
+            <div class="w-full h-64 overflow-hidden">
+                <Picture
+                    src={chasis}
+                    alt="chasis"
+                    class="w-full h-full object-cover md:transition md:duration-500 md:group-hover:scale-110 md:group-active:scale-105"
+                />
+                <div class="absolute inset-0 bg-transparent md:bg-black/20 md:group-hover:bg-black/10 md:group-active:bg-black/10 md:transition"></div>
+            </div>
+
+            <div class="p-10 flex flex-col flex-1">
+                <h3 class="text-2xl text-center font-display font-bold text-white" set:html={data.acf.service_1}></h3>
+                <div class="w-12 h-0.5 bg-azul-oscuro mx-auto my-6"></div>
+                <p class="font-sans text-gray-100 mt-4 text-center leading-relaxed flex-1">
+                    Ideal para cargas medianas, asegurando un traslado ágil y seguro.
+                </p>
+            </div>
+        </div>
+
+        <div
+            class="
+            group
+            bg-marron-tierra
+            rounded-2xl
+            shadow-md
+            overflow-hidden
+            w-full max-w-sm mx-auto
+            reveal-card
+            flex flex-col
+
+            md:transform
+            md:transition
+            md:duration-300
+            md:shadow-xl
+            md:hover:-translate-y-2
+            md:hover:shadow-2xl
+            md:active:scale-[0.98]
+            md:active:shadow-xl
+            "
+        >
+            <div class="w-full h-64 overflow-hidden">
+                <Picture
+                    src={jaulaSimple}
+                    alt="Jaula Simple"
+                    class="w-full h-full object-cover transition duration-500 group-hover:scale-110 group-active:scale-105"
+                />
+                <div class="absolute inset-0 bg-transparent md:bg-black/20 md:group-hover:bg-black/10 md:group-active:bg-black/10 md:transition"></div>
+            </div>
+
+            <div class="p-10 flex flex-col flex-1">
+                <h3 class="text-2xl text-center font-display font-bold text-white" set:html={data.acf.service_2}></h3>
+                <div class="w-12 h-0.5 bg-azul-oscuro mx-auto my-6"></div>
+                <p class="font-sans text-gray-100 mt-4 text-center leading-relaxed flex-1">
+                    Opción práctica para volúmenes más reducidos o movimientos específicos.
+                </p>
+            </div>
+        </div>
+
+        <div
+            class="
+            group
+            bg-marron-tierra
+            rounded-2xl
+            shadow-md
+            overflow-hidden
+            w-full max-w-sm mx-auto
+            reveal-card
+            flex flex-col
+
+            md:transform
+            md:transition
+            md:duration-300
+            md:shadow-xl
+            md:hover:-translate-y-2
+            md:hover:shadow-2xl
+            md:active:scale-[0.98]
+            md:active:shadow-xl
+            "
+        >
+            <div class="w-full h-64 overflow-hidden">
+                <Picture
+                    src={jaulaDoble}
+                    alt="Jaula Doble"
+                    class="w-full h-full object-cover transition duration-500 group-hover:scale-110 group-active:scale-105"
+                />
+                <div class="absolute inset-0 bg-transparent md:bg-black/20 md:group-hover:bg-black/10 md:group-active:bg-black/10 md:transition"></div>
+            </div>
+
+            <div class="p-10 flex flex-col flex-1">
+                <h3 class="text-2xl text-center font-display font-bold text-white" set:html={data.acf.service_3}></h3>
+                <div class="w-12 h-0.5 bg-azul-oscuro mx-auto my-6"></div>
+                <p class="font-sans text-gray-100 mt-4 text-center leading-relaxed flex-1">
+                    Diseñada para maximizar la capacidad de carga, optimizando costos en grandes traslados.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Por que elegirnos -->
+    <div class="
+        py-20 px-10
+        grid md:grid-cols-3 gap-10
+        text-center
+        bg-white/80
+        backdrop-blur-md
+        rounded-3xl
+        shadow-xl"
+    >
+
+        <div class="space-y-5 transition hover:-translate-y-1 group">
+            <div class="w-16 h-16 mx-auto flex items-center justify-center 
+                rounded-full bg-crema-natural shadow-md transition-all duration-300
+                group-hover:bg-marron-tierra
+                group-hover:scale-110
+                group-hover:shadow-lg
+                group-active:bg-marron-tierra
+                group-active:scale-110
+                group-active:shadow-lg">
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="w-8 h-8 text-marron-tierra transition group-hover:text-white group-active:text-white"
+                >
+                <path d="M4 19l4 -14" />
+                <path d="M16 5l4 14" />
+                <path d="M12 8v-2" />
+                <path d="M12 13v-2" />
+                <path d="M12 18v-2" />
+                </svg>
+            </div>
+
+            <h4 class="text-xl font-bold text-marron-tierra">
+            Experiencia
+            </h4>
+            <p class="text-gray-600">
+            Tres generaciones dedicadas al transporte y la logística.
+            </p>
+        </div>
+
+        <div class="space-y-5 transition hover:-translate-y-1 group">
+            <div class="w-16 h-16 mx-auto flex items-center justify-center 
+                rounded-full bg-crema-natural shadow-md transition-all duration-300
+                group-hover:bg-marron-tierra
+                group-hover:scale-110
+                group-hover:shadow-lg
+                group-active:bg-marron-tierra
+                group-active:scale-110
+                group-active:shadow-lg">
+
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="w-8 h-8 text-marron-tierra transition group-hover:text-white group-active:text-white"
+                >
+                <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+                <path d="M12 6l-3.293 3.293a1 1 0 0 0 0 1.414l.543 .543c.69 .69 1.81 .69 2.5 0l1 -1a3.182 3.182 0 0 1 4.5 0l2.25 2.25" />
+                <path d="M12.5 15.5l2 2" />
+                <path d="M15 13l2 2" />
+                </svg>
+            </div>
+
+            <h4 class="text-xl font-bold text-marron-tierra">
+            Compromiso
+            </h4>
+            <p class="text-gray-600">
+            Nos aseguramos de cumplir con cada entrega en tiempo y forma.
+            </p>
+        </div>
+
+        <div class="space-y-5 transition hover:-translate-y-1 group">
+            <div class="w-16 h-16 mx-auto flex items-center justify-center 
+                rounded-full bg-crema-natural shadow-md transition-all duration-300
+                group-hover:bg-marron-tierra
+                group-hover:scale-110
+                group-hover:shadow-lg 
+                group-active:bg-marron-tierra
+                group-active:scale-110
+                group-active:shadow-lg">
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="w-8 h-8 text-marron-tierra transition group-hover:text-white group-active:text-white"
+                >
+                    <path d="M11.46 20.846a12 12 0 0 1 -7.96 -14.846a12 12 0 0 0 8.5 -3a12 12 0 0 0 8.5 3a12 12 0 0 1 -.09 7.06" />
+                    <path d="M15 19l2 2l4 -4" />
+                </svg>
+            </div>
+            
+            <h4 class="text-xl font-bold text-marron-tierra">
+            Confianza
+            </h4>
+            <p class="text-gray-600">
+            Trabajamos con responsabilidad para cuidar cada carga.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- LLamado a la accion -->
+    <div class="bg-azul-oscuro text-white text-center rounded-2xl py-16 px-10 my-20">
+        <h3 class="text-3xl font-display mb-4">
+            ¿Necesitas un servicio de transporte?
+        </h3>
+        
+        <div class="flex flex-col items-center gap-2 mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+            </svg>
+
+            <div class="road"></div>
+        </div>
+
+        <p class="max-w-xl mx-auto mb-6 font-sans">
+            Contáctanos y te ayudaremos a encontrar la mejor solución para tu carga.
+        </p>
+
+        <a
+            id="btn-wpp-service"
+            href={`https://wa.me/${dataequipo.acf.worker_1_whatsapp}?text=${encodeURIComponent(
+            `Hola, te contacto desde la web de La Mary`
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="
+            inline-flex
+            items-center
+            gap-2
+            bg-white
+            text-azul-oscuro
+            px-8 py-4
+            rounded-xl
+            font-bold
+            shadow-lg
+            transition
+            hover:scale-105
+            hover:-translate-y-1
+            hover:shadow-xl
+            hover:ring-2
+            hover:ring-white/40
+            active:scale-105
+            active:-translate-y-1
+            active:shadow-xl
+            active:ring-2
+            active:ring-white/40
+            "
+        >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-whatsapp"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" /><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" /></svg>
+            Contactar por WhatsApp
+        </a>
+    </div>
+
+    <!-- <div class="text-xl space-y-2 font-sans text-center text-gray-600" set:html={data.content.rendered}></div> -->
+    <HomeContact slot='after-main-content'/>
+
+</MainLayout>

@@ -1,0 +1,186 @@
+<div>
+    <h3 class="text-marron-tierra font-black text-center text-2xl uppercase mb-5">Contacto</h3>
+    <form 
+        method="post"
+        class="space-y-3"  
+        novalidate
+    >
+        <legend class="text-xl">Llena todos los campos para enviar un mensaje.</legend>
+        <div class="flex flex-col space-y-3">
+            <label 
+                for="name"
+                class="input-label"
+            >Nombre Completo:</label>
+            <input 
+                id="name"
+                type="text"
+                name="name"
+                placeholder="Tu Nombre"
+                class="input-field"
+            />
+        </div>
+
+        <div class="flex flex-col space-y-3">
+            <label 
+                for="email"
+                class="input-label"
+            >Email:</label>
+            <input 
+                id="email"
+                type="email"
+                name="email"
+                placeholder="Tu Email"
+                class="input-field"
+            />
+        </div>
+
+        <div class="flex flex-col space-y-3">
+            <label 
+                for="subject"
+                class="input-label"
+            >Asunto:</label>
+            <input 
+                id="subject"
+                type="text"
+                name="subject"
+                placeholder="Asunto de Mensaje"
+                class="input-field"
+            />
+        </div>
+
+        <div class="flex flex-col space-y-3">
+            <label 
+                for="location"
+                class="input-label"
+            >Localidad:</label>
+            <input 
+                id="location"
+                type="text"
+                name="location"
+                placeholder="Tu Localidad"
+                class="input-field"
+            />
+        </div>
+
+        <div class="flex flex-col space-y-3">
+            <label 
+                for="phone"
+                class="input-label"
+            >Telefono:</label>
+            <input 
+                id="phone"
+                type="tel"
+                name="phone"
+                placeholder="Tu Telefono Ej: +5491112345678"
+                class="input-field"
+                inputmode="numeric"
+                pattern="[0-9+ ]*"
+            />
+        </div>
+
+        <div class="flex flex-col space-y-3">
+            <label 
+                for="message"
+                class="input-label"
+            >
+                <span>Contenido:</span> 
+                <span id="message-counter" class="text-sm text-gray-500" > 0 / 30 </span>
+            </label>
+            <textarea 
+                id="message"
+                name="message"
+                placeholder="Tu Mensaje"
+                class="input-field h-32"
+                minlength="30"
+            ></textarea>
+        </div>
+        <input 
+        id="form-submit"
+        data-gtm="submit-form"
+        type="submit" 
+        value="Enviar"  
+        class="btn-submit w-full p-3 text-white uppercase font-bold text-2xl"
+        disabled
+        />
+    </form>
+</div>
+
+<script>
+    
+    import { actions, isInputError } from "astro:actions"
+    import { Notyf } from 'notyf'
+    import "notyf/notyf.min.css"
+
+    declare global {
+    interface Window {
+            dataLayer?: Record<string, any>[];
+        }
+    }
+
+    function initContactForm() {
+        const form = document.querySelector('form')
+        const messageInput = document.querySelector<HTMLTextAreaElement>('#message')
+        const counter = document.querySelector<HTMLSpanElement>('#message-counter')
+        const submitBtn = document.querySelector<HTMLInputElement>('#form-submit')
+        
+        if (!form || !messageInput || !counter || !submitBtn) return
+
+        const MIN_LENGTH = 30
+        submitBtn.disabled = true
+
+        // CONTADOR
+        messageInput.addEventListener('input', () => {
+            const length = messageInput.value.length
+            counter.textContent = `${length} / ${MIN_LENGTH}`
+
+            if (length < MIN_LENGTH) {
+                counter.classList.remove('text-green-600')
+                counter.classList.add('text-red-500')
+                submitBtn.disabled = true
+            } else {
+                counter.classList.remove('text-red-500')
+                counter.classList.add('text-green-600')
+                submitBtn.disabled = false
+            }
+        })
+
+        form?.addEventListener('submit', async (e)=> {
+            e.preventDefault()
+            
+            const form = e.target as HTMLFormElement
+            const formData = new FormData(form)
+            
+            const { data, error } = await actions.contact.sendEmail(formData)
+            const inputErrors = isInputError(error) ? error.issues : []
+            const notyf = new Notyf({
+                position: {x: 'right', y: 'top'},
+                duration: 5000,
+                ripple: false,
+                dismissible: true
+            })
+            if(inputErrors) {
+                inputErrors.forEach( error => {
+                    notyf.error(error.message)
+                })
+            }
+
+            if(data?.message && !data.error) {
+                // ✅ GTM EVENT
+                window.dataLayer = window.dataLayer || []
+                window.dataLayer.push({
+                    event: 'form_submit',
+                    form_id: 'contact_form'
+                })
+                notyf.success(data.message)
+                const submitBtn = form.querySelector('input[type="submit"]')
+                submitBtn?.setAttribute('disabled', 'true')
+                form.reset()
+                setTimeout(() => {
+                    window.location.href = '/thank-you'
+                }, 1200)
+            }
+        })
+    }
+    
+    document.addEventListener('astro:page-load', initContactForm)
+</script>

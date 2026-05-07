@@ -1,0 +1,76 @@
+---
+    import { NosotrosSchema } from '@/types'
+
+    interface Props {
+        bgImage: string,
+        subtitle: string
+    }
+
+    const { bgImage, subtitle } = Astro.props
+    const lines = subtitle.split('|')
+    const url = `${import.meta.env.API_URL}/pages?slug=nosotros`
+    const res = await fetch(url)
+    const json = await res.json()
+
+    const dataequipo = NosotrosSchema.parse(json[0])
+---
+
+<header class="relative min-h-72 pb-40 md:pb-96 pt-(--nav-height)">
+
+    <div
+        class="absolute inset-0 bg-center bg-cover"
+        style={{ backgroundImage: `url(${bgImage})` }}
+    ></div>
+
+    <div class="absolute inset-0 bg-black/80"></div>
+    
+    <div class="relative text-2xl md:text-5xl font-display font-bold uppercase tracking-wider text-white text-center p-2 mt-30">
+        {lines.map((line, index) => (
+        <span class={`mt-4 h1-mask ${index === 1 ? 'delay' : ''} ${index === 2 ? 'delay2' : ''}`}>
+            <span class="block h1-text">{line}</span>
+        </span>
+        ))}
+    </div>
+
+    <!-- BOTÓN WHATSAPP -->
+    <a
+        id="btn-wpp-hero"
+        onclick="window.dataLayer && dataLayer.push({ event: 'click_whatsapp', position: 'header' })"
+        href={`https://wa.me/${dataequipo.acf.worker_1_whatsapp}?text=${encodeURIComponent(
+        `Hola, te contacto desde la web de La Mary`
+        )}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="
+            hidden lg:flex
+            absolute
+            right-4/6 -translate-x-4/6
+            z-40 bottom-20
+
+            w-20 h-14
+            items-center justify-center
+
+            bg-marron-tierra
+            text-white
+            shadow-2xl
+
+            hover:scale-105
+            transition
+            border-4 ring-crema-natural border-b-0 hover:border-b-4
+            lg:w-auto lg:px-6 lg:py-3
+        "
+    >
+        <!-- Ícono -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" />
+            <path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" />
+        </svg>
+
+        <!-- Texto solo desktop -->
+        <span class="hidden lg:inline ml-2 font-semibold">
+            Contactanos
+        </span>
+    </a>
+</header>

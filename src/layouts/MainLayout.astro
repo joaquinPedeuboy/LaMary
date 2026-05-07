@@ -1,0 +1,278 @@
+---
+    import { ClientRouter, fade } from "astro:transitions"
+    import { navigation } from "@/config/navigation"
+	import "../styles/global.css"
+    import Header from "@/components/ui/Header.astro"
+    import Footer from "@/components/ui/Footer.astro"
+    import MainNav from "@/components/ui/MainNav.astro"
+    import Logo2 from '@/assets/sinFondo/BLANCO - 2.png'
+    import { Picture } from 'astro:assets'
+    import { NosotrosSchema } from "@/types"
+
+    interface Props {
+        title: string
+        pageTitle?: string
+        subtitle: string
+        bgImage: string
+    }
+    const { title,pageTitle, subtitle, bgImage } = Astro.props
+
+    const url = `${import.meta.env.API_URL}/pages?slug=nosotros`
+    const res = await fetch(url)
+    const json = await res.json()
+
+    const dataequipo = NosotrosSchema.parse(json[0])
+---
+<!DOCTYPE html>
+<html lang="es" class="font-sans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Empresa de transporte de Hacienda, es el reflejo de un legado que sigue creciendo con compromiso, respeto y confianza. Una marca que mira hacia adelante, sin olvidar de dónde viene.">
+    <title>La Mary: {title}</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/sinFondo/NEGRO - 3.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <ClientRouter />
+    <!-- Google Tag Manager -->
+    <script is:inline>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TDR368X4');
+    </script>
+    <!-- End Google Tag Manager -->
+
+
+</head>
+<body class="bg-gris">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TDR368X4"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
+    <Header bgImage={bgImage} subtitle={subtitle} transition:animate={fade({duration: "1s"})}/>
+    <div
+    id="main-nav"
+    class="fixed top-0 left-0 w-full z-50 transition-all duration-300"
+    >
+        <div class="max-w-7xl mx-auto px-6 h-(--nav-height) flex items-center justify-between">
+        
+            <a href="/" class="shrink-0">
+            <Picture
+                src={Logo2}
+                alt="logo"
+                formats={['avif', 'webp']}
+                class="w-64 md:w-72"
+            />
+            </a>
+
+            <MainNav />
+            
+        </div>
+    </div>
+
+    <slot name="before-main-content" />
+
+    <main 
+        class="bg-crema-natural p-6 md:p-12 lg:p-20 max-w-7xl mx-auto lg:-mt-20 relative"
+    >
+        <div transition:animate={fade({duration: ".5s"})}>
+            {pageTitle && (
+                <h2 class="text-marron-tierra font-display font-bold text-center text-2xl md:text-4xl pb-10 uppercase after:laMary-icon">
+                    {pageTitle}
+                </h2>
+            )}
+        </div>
+        <slot />
+    </main>
+
+    <slot name="after-main-content" />
+
+    <Footer />
+
+    <!-- WhatsApp Floating Button -->
+    <a
+        id="btn-wpp-floating"
+        href={`https://wa.me/${dataequipo.acf.worker_1_whatsapp}?text=${encodeURIComponent(
+        `Hola, te contacto desde la web de La Mary`
+        )}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="
+        fixed bottom-6 right-6 z-50
+        w-14 h-14
+        flex items-center justify-center
+        bg-azul-marino
+        text-white
+        rounded-full
+        shadow-2xl
+        hover:scale-110
+        transition
+        "
+    >
+        <!-- Ícono -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-whatsapp"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" /><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" /></svg>
+    </a>
+
+    <div
+        id="mobile-menu"
+        class="
+            fixed inset-0 z-9999
+            hidden
+            bg-black
+            flex flex-col
+            items-center
+            justify-center
+            gap-8
+            "
+    >
+        <div class="flex flex-col items-center justify-center h-full gap-8">
+            {navigation.map(item => (
+            <a
+                href={item.href}
+                class="text-white text-2xl font-display uppercase"
+            >
+                {item.name}
+            </a>
+            ))}
+
+            <button
+            id="close-menu"
+            class="absolute top-6 right-6 text-white text-3xl"
+            aria-label="Cerrar menú"
+            >
+            ✕
+            </button>
+        </div>
+    </div>
+</body>
+
+<!-- Evento de navegacion manuel GTM -->
+<script>
+    let lastPath = ""
+
+    const trackPageView = () => {
+        const currentPath = window.location.pathname
+
+        if (currentPath === lastPath) return
+
+        lastPath = currentPath
+
+        window.dataLayer = window.dataLayer || []
+        window.dataLayer.push({
+            event: "page_view",
+            page_path: currentPath,
+            page_title: document.title,
+            page_referrer: document.referrer
+        })
+    }
+
+    document.addEventListener("astro:page-load", trackPageView)
+    document.addEventListener("astro:after-swap", trackPageView)
+</script>
+
+<!-- /** Card Reveal */ -->
+<script>
+    const initCards = () => {
+        const cards = document.querySelectorAll('.reveal-card')
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('reveal-active')
+					}
+				})
+			},
+			{ threshold: 0.2 }
+		)
+
+		cards.forEach(card => observer.observe(card))
+	}
+
+    document.addEventListener('astro:page-load', initCards)
+    document.addEventListener('astro:after-swap', initCards)
+</script>
+
+<script>
+    const initWorkers = () => {
+        const workers = document.querySelectorAll<HTMLElement>('.reveal-worker')
+
+        const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('opacity-100', 'translate-y-0')
+                observer.unobserve(entry.target)
+            }
+            })
+        },
+        { threshold: 0.2 }
+        )
+
+        workers.forEach((card, index) => {
+            card.style.transitionDelay = `${index * 200}ms`
+            observer.observe(card)
+        })
+    }
+    document.addEventListener('astro:page-load', initWorkers)
+    document.addEventListener('astro:after-swap', initWorkers)
+</script>
+
+<!-- /** Navegacion sticky */ -->
+<script>
+    const initNavSticky = () => {
+        const nav = document.getElementById('main-nav')
+            if (!nav) return
+
+            window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add(
+                'bg-black/70',
+                'backdrop-blur-md',
+                'shadow-lg'
+                )
+            } else {
+                nav.classList.remove(
+                'bg-black/70',
+                'backdrop-blur-md',
+                'shadow-lg'
+                )
+            }
+        })
+    }
+    document.addEventListener('astro:page-load', initNavSticky)
+    document.addEventListener('astro:after-swap', initNavSticky)
+</script>
+
+
+<!-- /** NAVEGACION MOBILE */ -->
+
+<script>
+    const initBtn = () => {
+        const btn = document.getElementById('menu-btn')
+        const menu = document.getElementById('mobile-menu')
+        const close = document.getElementById('close-menu')
+
+        if (!btn || !menu || !close) return
+
+        btn.addEventListener('click', () => {
+            menu.classList.remove('hidden')
+            document.body.classList.add('overflow-hidden')
+        })
+
+        close.addEventListener('click', () => {
+            menu.classList.add('hidden')
+            document.body.classList.remove('overflow-hidden')
+        })
+    }
+    document.addEventListener('astro:page-load', initBtn)
+    document.addEventListener('astro:after-swap', initBtn)
+</script>
+
+
+</html>
