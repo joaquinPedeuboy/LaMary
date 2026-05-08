@@ -7,12 +7,16 @@
     import jaulaSimple from '@/assets/JaulaSimple2.jpeg';
     import jaulaDoble from '@/assets/JaulaDoble3.jpeg';
     const url = `${import.meta.env.API_URL}/pages?slug=servicios`
-    const res = await fetch(url)
+    const res = await fetch(url, {
+        cache: 'no-store'
+    })
     const json = await res.json()
     const data = ServiciosSchema.parse(json[0])
 
     const url2 = `${import.meta.env.API_URL}/pages?slug=nosotros`
-    const res2 = await fetch(url2)
+    const res2 = await fetch(url2, {
+        cache: 'no-store'
+    })
     const json2 = await res2.json()
 
     const dataequipo = NosotrosSchema.parse(json2[0])
