@@ -29,21 +29,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Empresa de transporte de Hacienda, es el reflejo de un legado que sigue creciendo con compromiso, respeto y confianza. Una marca que mira hacia adelante, sin olvidar de dónde viene.">
-    <title>La Mary: {title}</title>
     <link rel="icon" type="image/png" sizes="32x32" href="/sinFondo/NEGRO - 3.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <ClientRouter />
     <!-- Google Tag Manager -->
     <script is:inline>
-    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-TDR368X4');
     </script>
     <!-- End Google Tag Manager -->
 
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JDHX5W0KYZ"></script>
+    <script is:inline>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-JDHX5W0KYZ', {
+            send_page_view: false
+        });
+    </script>
+
+    <title>La Mary: {title}</title>
 
 </head>
 <body class="bg-gris">
@@ -172,7 +188,18 @@
     }
 
     document.addEventListener("astro:page-load", trackPageView)
-    document.addEventListener("astro:after-swap", trackPageView)
+</script>
+<!-- Analytics -->
+<script is:inline>
+	const trackAnalyticsPage = () => {
+		gtag('event', 'page_view', {
+			page_title: document.title,
+			page_location: window.location.href,
+			page_path: window.location.pathname,
+		});
+	};
+
+	document.addEventListener('astro:page-load', trackAnalyticsPage);
 </script>
 
 <!-- /** Card Reveal */ -->
@@ -274,5 +301,30 @@
     document.addEventListener('astro:after-swap', initBtn)
 </script>
 
+<script is:inline>
+	const initWhatsappTracking = () => {
+		const btn = document.getElementById('btn-wpp-floating');
 
+		if (!btn || btn.dataset.trackingAttached) return;
+
+		btn.dataset.trackingAttached = 'true';
+
+		btn.addEventListener('click', () => {
+
+			// GTM
+			window.dataLayer = window.dataLayer || [];
+
+			window.dataLayer.push({
+				event: 'whatsapp_click'
+			});
+
+			// GA4
+			gtag('event', 'whatsapp_click', {
+				location: 'floating_button'
+			});
+		});
+	};
+
+	document.addEventListener('astro:page-load', initWhatsappTracking);
+</script>
 </html>

@@ -13,7 +13,6 @@ export default defineConfig({
     image: {
         domains: ['lamarywordpress.test', 'lightgoldenrodyellow-camel-304621.hostingersite.com']
     },
-    output: 'server',
 
     adapter: netlify()
 });
