@@ -50,6 +50,9 @@ export const ServiciosSchema = BaseWPSchema.extend({
         service_1: z.string(),
         service_2: z.string(),
         service_3: z.string(),
+        description_service_1: z.string(),
+        description_service_2: z.string(),
+        description_service_3: z.string(),
     })
 })
 
