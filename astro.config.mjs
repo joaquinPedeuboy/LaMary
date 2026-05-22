@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
+import sitemap from '@astrojs/sitemap'
 
 import netlify from '@astrojs/netlify';
 
@@ -11,8 +12,10 @@ export default defineConfig({
     },
 
     image: {
-        domains: ['lamarywordpress.test', 'lightgoldenrodyellow-camel-304621.hostingersite.com']
+        domains: ['lightgoldenrodyellow-camel-304621.hostingersite.com']
     },
     output: 'server',
-    adapter: netlify()
+    adapter: netlify(),
+    site: 'https://www.transportelamary.com',
+    integrations: [sitemap()]
 });
