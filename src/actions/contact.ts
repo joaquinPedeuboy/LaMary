@@ -34,7 +34,7 @@ export const contact = {
             ),
         }),
         handler: async (input) => {
-            const url = `${import.meta.env.HOME_URL}wp-json/contact-form-7/v1/contact-forms/100/feedback`
+            const url = `${import.meta.env.API_URL}wp-json/contact-form-7/v1/contact-forms/100/feedback`
 
             const formData = new FormData()
             formData.append('your-name', input.name)

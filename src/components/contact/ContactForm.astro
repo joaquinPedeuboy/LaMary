@@ -175,6 +175,8 @@
                 const submitBtn = form.querySelector('input[type="submit"]')
                 submitBtn?.setAttribute('disabled', 'true')
                 form.reset()
+                // Permitir acceder a la página de agradecimiento
+                sessionStorage.setItem('contact-form-sent', 'true')
                 setTimeout(() => {
                     window.location.href = '/thank-you'
                 }, 1200)

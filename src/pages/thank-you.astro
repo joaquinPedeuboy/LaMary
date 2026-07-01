@@ -6,7 +6,13 @@
 	import elementGraphics4 from '@/assets/sinFondo/NEGRO - 1.png'
     import "../styles/global.css"
 ---
-
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/sinFondo/NEGRO - 3.png">
+    <title>Gracias por tu consulta | Transporte La Mary</title>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
 <main class="min-h-screen flex items-center justify-center bg-crema-natural px-6 relative">
     <!-- IZQUIERDA -->
     <div class="hidden lg:flex absolute left-20 top-20 w-65 opacity-10 pointer-events-none">
@@ -68,7 +74,7 @@
         <!-- Mensaje -->
         <p class="text-lg sm:text-xl text-gray-700 leading-relaxed">
             Tu mensaje fue enviado correctamente.<br />
-            En breve nos comunicamos.
+            En breve nos comunicamos con vos.
         </p>
 
         <!-- CTA -->
@@ -98,6 +104,22 @@
     </div>
 </main>
 <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        event: 'thank_you_view',
+        page_type: 'contact_thank_you'
+    });
+</script>
+<script is:inline>
+    const sent = sessionStorage.getItem('contact-form-sent');
+
+    if (!sent) {
+        window.location.replace('/');
+    }
+
+    // Eliminar la marca para que no pueda volver entrando manualmente
+    sessionStorage.removeItem('contact-form-sent');
+
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
         event: 'thank_you_view'
